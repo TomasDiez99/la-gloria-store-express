@@ -92,4 +92,58 @@ router.get("/create", async (req, res) => {
   }
 });
 
+router.get("/id/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { data, error } = await supabase
+      .from("clients")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (!data) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error has ocurred when getting the client" });
+  }
+});
+
+router.get("/email/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+
+    const { data, error } = await supabase
+      .from("clients")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error) {
+      throw new Error(error.message);
+    }
+
+    if (!data) {
+      return res.status(404).json({ message: "Client not found" });
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res
+      .status(500)
+      .json({ message: "An error has ocurred when getting the client" });
+  }
+});
+
 module.exports = router;
